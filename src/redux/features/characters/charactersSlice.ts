@@ -30,11 +30,21 @@ interface IFilterCharacter{
 }
 
 
-export const fetchCharacters = createAsyncThunk('characters/fetchCharacters',async(params:IFilterCharacter)=>{
-    const {status,species,name,gender,currentPage}=params;
-    const response = await axios.get(`https://rickandmortyapi.com/api/character/?name=${name}&status=${status}&species=${species}&gender=${gender}&page=${currentPage}`);
-    return {response:response.data,filters:{status,species,name,gender,currentPage}};
+export const fetchCharactersByFilters = createAsyncThunk('characters/fetchCharactersByFilters',async(params:IFilterCharacter)=>{
+    const {status,species,name,gender}=params;
+    const response = await axios.get(`https://rickandmortyapi.com/api/character/?name=${name}&status=${status}&species=${species}&gender=${gender}`);
+    return {response:response.data,filters:{status,species,name,gender}};
 })
+
+export const fetchCharactersByPage = createAsyncThunk('characters/fetchCharactersByPage',async(currentPage:number,{getState})=>{
+    const {characters} = getState() as {characters:any};
+
+    const {filter} = characters  as {filter:IFilterCharacter};
+    const response = await axios.get(`https://rickandmortyapi.com/api/character/?name=${filter.name}&status=${filter.status}&species=${filter.species}&gender=${filter.gender}&page=${currentPage}`);
+    return {response:response.data,currentPage:currentPage};
+});
+
+
 
 
 const charactersSlice = createSlice({
@@ -49,37 +59,46 @@ const charactersSlice = createSlice({
         },
         selectedCharacter:(state,action:PayloadAction<ICharacter>)=>{
             state.selectedCharacter = action.payload;
-        },
-        resetCharacters:(state)=>{
-            state.characters = [];
-            state.count=0;
-            state.pages=1;
-            state.filter.currentPage=1;
-            state.loading=false;
-            state.error=null;
-
-            
         }
     },
     extraReducers:(builder)=> {
-        builder.addCase(fetchCharacters.pending,(state,action)=>{
+        builder.addCase(fetchCharactersByFilters.pending,(state,action)=>{
             state.loading = true;
         })
-        .addCase(fetchCharacters.fulfilled,(state,action)=>{
+        .addCase(fetchCharactersByFilters.fulfilled,(state,action)=>{
+            state.characters = [...action.payload.response.results];
+            state.count = action.payload.response.info.count;
+            state.pages = action.payload.response.info.pages;
+            state.next = action.payload.response.info.next;
+            state.prev = action.payload.response.info.prev;
+            state.filter = {...action.payload.filters,currentPage:1};
+            state.loading = false;
+        })
+        .addCase(fetchCharactersByFilters.rejected,(state,action)=>{
+            state.loading = false;
+            state.characters = [];
+            state.error = action.error.message || null;
+            
+        })
+        builder.addCase(fetchCharactersByPage.pending,(state,action)=>{
+            // state.loading = true;
+        }).
+        addCase(fetchCharactersByPage.fulfilled,(state,action)=>{
             state.characters.push(...action.payload.response.results);
             state.count = action.payload.response.info.count;
             state.pages = action.payload.response.info.pages;
             state.next = action.payload.response.info.next;
             state.prev = action.payload.response.info.prev;
-            state.filter = {...action.payload.filters};
+            state.filter.currentPage = action.payload.currentPage;
             state.loading = false;
-        })
-        .addCase(fetchCharacters.rejected,(state,action)=>{
+        }).
+        addCase(fetchCharactersByPage.rejected,(state,action)=>{
             state.loading = false;
+            state.characters = [];
             state.error = action.error.message || null;
-            
+            state.loading = false;
         })
     },
 })
-export const {addFavoriteCharacter,selectedCharacter,resetCharacters} = charactersSlice.actions;
+export const {addFavoriteCharacter,selectedCharacter} = charactersSlice.actions;
 export default charactersSlice.reducer;

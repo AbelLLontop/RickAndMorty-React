@@ -1,20 +1,31 @@
 import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { ActionFunction, Form, Link, useFetcher } from "react-router-dom";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { useAppSelector } from "../hooks/useStore";
 
+
+
 export const NavBar = () => {
   const { navRef, arrowRef, handleTopScroll } = useScrollNavbarAndArrowUp();
-  const favoritesLenght = useAppSelector((state) => state.characters.favorites.length);
- 
+  const {gender,species,status,name} = useAppSelector((state) => state.characters.filter);
+  const favoritesLenght = useAppSelector(
+    (state) => state.characters.favorites.length
+    );
+
   return (
     <>
       <nav ref={navRef} className="navbar">
-        <Link to={'/'}>
+        <Link to={"/"}>
           <h1>Personajes de Rick and Morty</h1>
         </Link>
         <div className="search">
-          <input type="text" placeholder="Search" />
+        <Form>
+            <input  name="name" type="text" placeholder="Search"/>
+            <input name="species" value={species} type="hidden" placeholder="Search" />
+            <input name="status" value={status} type="hidden" placeholder="Search" />
+            <input name="gender" value={gender} type="hidden" placeholder="Search" />
+            <button >Search</button>
+          </Form>
         </div>
         <div className="links_content">
           <ul className="links">

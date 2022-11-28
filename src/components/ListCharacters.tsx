@@ -1,28 +1,10 @@
 import { useAppSelector, useAppDispatch } from "../hooks/useStore";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchCharacters, resetCharacters } from "../redux/features/characters/charactersSlice";
+import { fetchCharactersByFilters, fetchCharactersByPage } from "../redux/features/characters/charactersSlice";
 import { CharacterCard } from "./CharacterCard";
-import { LoaderFunction, useLoaderData } from 'react-router-dom';
+import {  useLoaderData } from 'react-router-dom';
 import { useEffect } from 'react';
-
-interface ILoaderParams{
-  status: string;
-  species: string;
-  gender:string;
-}
-export const loader:LoaderFunction= async ({request,params})=>{
-  const url = new URL(request.url);
-  const status = url.searchParams.get('status')||'';
-  const species = url.searchParams.get('species')||'';
-  const gender = url.searchParams.get('gender')||'';
-  
-  return {
-    status,
-    species,
-    gender
-  }
-  
-}
+import { ILoaderParams } from "../App";
 
 
 const ListCharacters = () => {
@@ -36,32 +18,27 @@ const ListCharacters = () => {
   useEffect(()=>{
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
-    });
-    dispatch(resetCharacters());
-    dispatch(fetchCharacters({...filters,...responseParamsLoader,currentPage:1}));
+    })
+      dispatch(fetchCharactersByFilters({...filters,...responseParamsLoader}));
+    
   },[responseParamsLoader])
 
 
   const fetchMoreData = () => {
-    dispatch(fetchCharacters({
-      ...filters,
-      currentPage: filters.currentPage + 1,
-    }));
+    dispatch(fetchCharactersByPage(filters.currentPage +1));
   };
-  if(loading&& characters.length===0){
+  if(loading){
     return <div className="loader">
       <h1>CARGANDO!</h1>
     </div>
   }
-  if(!loading && characters.length===0){
+  if(characters.length === 0){
     return <div className="loader">
-      <h1>No se encontraron resultados</h1>
+      <h1>NO SE ENCONTRARON RESULTADOS!</h1>
     </div>
   }
-
   return (
-    
+   
       <InfiniteScroll
         className="listCharacters"
         dataLength={characters.length}
@@ -74,8 +51,10 @@ const ListCharacters = () => {
           <CharacterCard key={character.id} character={character} />
         ))}
       </InfiniteScroll>
+ 
   );
 };
+
 
 
 
