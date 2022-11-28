@@ -36,12 +36,6 @@ export const NavBar = () => {
               <Link to="/favoritos">Favorites</Link>
               <span className="count_favorites">{favoritesLenght}</span>
             </li>
-            <li>
-              <Link to="/locations">Locations</Link>
-            </li>
-            <li>
-              <Link to="/episodes">Episodes</Link>
-            </li>
           </ul>
         </div>
       </nav>

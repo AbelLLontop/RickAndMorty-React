@@ -4,6 +4,7 @@ import Layout from "../pages/Layout";
 import {lazy,Suspense} from 'react'
 import { loader as LoaderFiltersParams} from "../App";
 import App from "../App";
+import FavoritesPage from "../pages/FavoritesPage";
 // const App = lazy(()=>import('../App'))
 
 
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
                 element:<App /> ,
                
                 loader:LoaderFiltersParams
+            },
+            {
+                path:'/favoritos',
+                element:<FavoritesPage/>
             },
             {
                 path: "*",

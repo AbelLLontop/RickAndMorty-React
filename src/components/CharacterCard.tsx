@@ -1,4 +1,4 @@
-import { useState,FC } from "react";
+import { useState, FC } from "react";
 import { ICharacter } from "../interfaces/character.interface";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
@@ -7,28 +7,45 @@ import { FaQuestion } from "react-icons/fa";
 import { IoMaleSharp, IoFemaleSharp } from "react-icons/io5";
 import { GiAlienSkull } from "react-icons/gi";
 import { GiPerson } from "react-icons/gi";
-import { useAppDispatch } from '../hooks/useStore';
+import { useAppDispatch } from "../hooks/useStore";
 import { addFavoriteCharacter } from "../redux/features/characters/charactersSlice";
+import toast from "react-hot-toast";
 
-interface Props{
+const notify = (message: string) =>
+  toast(message, {
+    icon: "👏",
+  });
+
+interface Props {
   character: ICharacter;
 }
 
-export const CharacterCard:FC<Props> = ({ character }) => {
+export const CharacterCard: FC<Props> = ({ character }) => {
   const [star, setStar] = useState(false);
-  const dispatch =useAppDispatch();
+  const dispatch = useAppDispatch();
   const startIcon = iconComponentStar(star);
   const iconSpecies = iconComponentSpecie(character.species);
   const iconStatus = iconComponentStatus(character.status);
   const iconGender = iconComponentGender(character.gender);
 
   const handleStar = () => {
+    // notify(`agregando ${character.name} a favoritos`);
+    if (!star) {
+      toast(`agregando ${character.name} a favoritos`, {
+        icon: "😎",
+      });
+    } else {
+      toast(`removiendo ${character.name} de favoritos`, {
+        icon: "😥",
+      });
+    }
+
     setStar(!star);
-      dispatch(addFavoriteCharacter(character));
-  }
+    dispatch(addFavoriteCharacter(character));
+  };
 
   return (
-    <div className="card" onClick={handleStar}>
+    <div className="card card-shadow rounded" onClick={handleStar}>
       <span>
         {iconStatus}
         {character.status}
@@ -46,15 +63,42 @@ export const CharacterCard:FC<Props> = ({ character }) => {
       </div>
       <div className="card_container_info">
         <h4>{character.name}</h4>
-        <span>{character.location.name}</span>
-        <p>
-          {iconSpecies} {character.species}
-        </p>
-        <p>
-          {iconGender}
-          {character.gender}
-        </p>
+      
+        <div style={{ display: "grid",gridTemplateColumns:'1fr 1fr' }}>
+          <div>
+          <span className="text-secondary" style={{ fontSize: "12px" }}>
+          {iconSpecies}  especie
+          </span>
+          <br />
+          <p>
+            {character.species}
+          </p>
+          </div>
+          <div>
+          <span className="text-secondary" style={{ fontSize: "12px" }}>
+            genero
+          </span>
+          <p>
+            {iconGender}
+            {character.gender}
+          </p>
+          </div>
+        </div>
+        <span className="text-secondary" style={{ fontSize: "12px" }}>
+          origen
+        </span>
+        <br />
+        <span >{character.location.name}</span>
+        <br />
+
+        <div className="starContent">
+        <span className="text-secondary" style={{ fontSize: "12px" }}>
+          Star
+        </span>
         {startIcon}
+
+        </div>
+       
       </div>
     </div>
   );
@@ -69,7 +113,7 @@ const iconComponentStar = (isFavorite: boolean) => {
 const iconComponentStatus = (status: string) => {
   switch (status) {
     case "Alive":
-      return <AiFillHeart color="red" />;
+      return <AiFillHeart className="red"/>;
     case "Dead":
       return <GiDeathSkull />;
     default:

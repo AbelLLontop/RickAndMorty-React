@@ -1,11 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: cursive;
+  font-family: 'Roboto', sans-serif;
+  /* color: rgba(45,55,72); */
+  color: rgba(26,32,44) ;
+}
+
+.text-secondary{
+  color: rgba(113,128,150) !important;
+}
+.red{
+  fill:red;
+}
+.starContent{
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }
 body {
   background: whitesmoke;
+  background-color: rgba(237,242,247);;
+}
+
+.card-shadow{
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 12px 16px 0 rgba(0,0,0,0.03),0 1px 2px 0 rgba(0,0,0,0.04);
+  box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+.rounded{
+  border-radius: 0.5rem;
 }
 
 ul{
@@ -13,8 +39,9 @@ ul{
 }
 .card{
   background: white;
-  box-shadow: 0 0 1rem rgb(0 0 0 / 20%);
   padding: 1rem;
+  width: 14rem;
+  height: max-content;
 
 }
 .card_container_image{
@@ -50,10 +77,12 @@ ul{
   flex-grow: 1;
 }
 .listCharacters{
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  justify-items: center;
-  gap:1rem;
+  display: grid; 
+  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 1rem;
 
  
 }

@@ -7,7 +7,7 @@ export const SiderbarFilter = () => {
  
 
   return (
-    <aside className="siderbar">
+    <aside className="siderbar card-shadow">
       <Form className="filters">
         <h2>Filtros</h2>
         <br />
