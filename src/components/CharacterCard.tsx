@@ -21,16 +21,14 @@ interface Props {
 }
 
 export const CharacterCard: FC<Props> = ({ character }) => {
-  const [star, setStar] = useState(false);
   const dispatch = useAppDispatch();
-  const startIcon = iconComponentStar(star);
+  const startIcon = iconComponentStar(character.star);
   const iconSpecies = iconComponentSpecie(character.species);
   const iconStatus = iconComponentStatus(character.status);
   const iconGender = iconComponentGender(character.gender);
 
   const handleStar = () => {
-    // notify(`agregando ${character.name} a favoritos`);
-    if (!star) {
+    if (!character.star) {
       toast(`agregando ${character.name} a favoritos`, {
         icon: "😎",
       });
@@ -39,8 +37,6 @@ export const CharacterCard: FC<Props> = ({ character }) => {
         icon: "😥",
       });
     }
-
-    setStar(!star);
     dispatch(addFavoriteCharacter(character));
   };
 
@@ -51,7 +47,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
         {character.status}
       </span>
       <div className="card_container_image">
-        {star && (
+        {character.star && (
           <span className="card_ticket_favorite">{startIcon} Favorito</span>
         )}
         <img
@@ -88,7 +84,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
           origen
         </span>
         <br />
-        <span >{character.location.name}</span>
+        <span >{character.location}</span>
         <br />
 
         <div className="starContent">
