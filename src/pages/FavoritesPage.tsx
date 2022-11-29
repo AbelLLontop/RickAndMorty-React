@@ -1,4 +1,3 @@
-import React from 'react'
 import { CharacterCard } from '../components/CharacterCard';
 import { useAppSelector } from '../hooks/useStore'
 

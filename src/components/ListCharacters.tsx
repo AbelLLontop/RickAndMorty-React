@@ -38,7 +38,6 @@ const ListCharacters = () => {
     </div>
   }
   return (
-   
       <InfiniteScroll
         className="listCharacters"
         dataLength={characters.length}
@@ -51,7 +50,6 @@ const ListCharacters = () => {
           <CharacterCard key={character.id} character={character} />
         ))}
       </InfiniteScroll>
- 
   );
 };
 

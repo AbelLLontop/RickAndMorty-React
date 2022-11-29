@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ActionFunction, Form, Link, useFetcher } from "react-router-dom";
+import {  Form, Link } from "react-router-dom";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { useAppSelector } from "../hooks/useStore";
 

@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../pages/Layout";
 
-import {lazy,Suspense} from 'react'
 import { loader as LoaderFiltersParams} from "../App";
 import App from "../App";
 import FavoritesPage from "../pages/FavoritesPage";

@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import {  FC } from "react";
 import { ICharacter } from "../interfaces/character.interface";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
@@ -99,6 +99,8 @@ export const CharacterCard: FC<Props> = ({ character }) => {
     </div>
   );
 };
+
+
 
 const iconComponentSpecie = (species: string) => {
   return species === "Human" ? <GiPerson /> : <GiAlienSkull />;
