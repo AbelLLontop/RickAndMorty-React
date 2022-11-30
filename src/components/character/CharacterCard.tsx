@@ -1,5 +1,5 @@
-import {  FC } from "react";
-import { ICharacter } from "../interfaces/character.interface";
+import {  FC, memo } from "react";
+import { ICharacter } from "@/interfaces/character.interface";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { GiDeathSkull } from "react-icons/gi";
@@ -7,20 +7,17 @@ import { FaQuestion } from "react-icons/fa";
 import { IoMaleSharp, IoFemaleSharp } from "react-icons/io5";
 import { GiAlienSkull } from "react-icons/gi";
 import { GiPerson } from "react-icons/gi";
-import { useAppDispatch } from "../hooks/useStore";
-import { addFavoriteCharacter } from "../redux/features/characters/charactersSlice";
+import { useAppDispatch } from "@/hooks/useStore";
+import { addFavoriteCharacter } from "@/redux/features/characters/charactersSlice";
 import toast from "react-hot-toast";
-
-const notify = (message: string) =>
-  toast(message, {
-    icon: "👏",
-  });
 
 interface Props {
   character: ICharacter;
 }
 
-export const CharacterCard: FC<Props> = ({ character }) => {
+
+
+const CharacterCard: FC<Props> = ({ character }) => {
   const dispatch = useAppDispatch();
   const startIcon = iconComponentStar(character.star);
   const iconSpecies = iconComponentSpecie(character.species);
@@ -28,15 +25,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
   const iconGender = iconComponentGender(character.gender);
 
   const handleStar = () => {
-    if (!character.star) {
-      toast(`agregando ${character.name} a favoritos`, {
-        icon: "😎",
-      });
-    } else {
-      toast(`removiendo ${character.name} de favoritos`, {
-        icon: "😥",
-      });
-    }
+    showToast(character.star,character.name);
     dispatch(addFavoriteCharacter(character));
   };
 
@@ -100,8 +89,19 @@ export const CharacterCard: FC<Props> = ({ character }) => {
   );
 };
 
+export default memo(CharacterCard);
 
-
+const showToast = (star:boolean,name:string)=>{
+  if (!star) {
+    toast(`agregando ${name} a favoritos`, {
+      icon: "😎",
+    });
+  } else {
+    toast(`removiendo ${name} de favoritos`, {
+      icon: "😥",
+    });
+  }
+}
 const iconComponentSpecie = (species: string) => {
   return species === "Human" ? <GiPerson /> : <GiAlienSkull />;
 };

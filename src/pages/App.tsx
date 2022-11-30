@@ -1,6 +1,5 @@
 import { LoaderFunction } from "react-router-dom";
-import ListCharacters from "./components/ListCharacters";
-import { SiderbarFilter } from "./components/SiderBarFilter";
+import { SidebarFilter ,ListCharacters} from "@/components";
 
 export interface ILoaderParams{
   status: string;
@@ -28,7 +27,7 @@ export const loader:LoaderFunction= async ({request,params})=>{
 const App = () => {
   return (
       <div className="pageHome">
-        <SiderbarFilter />
+        <SidebarFilter />
         <main className="main">
           <ListCharacters />
         </main>

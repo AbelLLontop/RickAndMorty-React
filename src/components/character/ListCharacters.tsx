@@ -1,10 +1,12 @@
-import { useAppSelector, useAppDispatch } from "../hooks/useStore";
+import { useAppSelector, useAppDispatch } from "../../hooks/useStore";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchCharactersByFilters, fetchCharactersByPage } from "../redux/features/characters/charactersSlice";
-import { CharacterCard } from "./CharacterCard";
+import { fetchCharactersByFilters, fetchCharactersByPage } from "@/redux/features/characters/charactersSlice";
+import  CharacterCard  from "./CharacterCard";
 import {  useLoaderData } from 'react-router-dom';
 import { useEffect } from 'react';
-import { ILoaderParams } from "../App";
+import { ILoaderParams } from "@/pages/App";
+import {SkletonCardList} from "../skleton";
+
 
 
 const ListCharacters = () => {
@@ -28,9 +30,7 @@ const ListCharacters = () => {
     dispatch(fetchCharactersByPage(filters.currentPage +1));
   };
   if(loading){
-    return <div className="loader">
-      <h1>CARGANDO!</h1>
-    </div>
+    return <SkletonCardList/>
   }
   if(characters.length === 0){
     return <div className="loader">

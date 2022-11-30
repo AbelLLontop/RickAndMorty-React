@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ICharacter } from "../../../interfaces/character.interface";
+import { ICharacter } from "@/interfaces/character.interface";
 
 const initialState = {
   characters: [] as ICharacter[],
+  favorites: [] as ICharacter[],
   loading: false,
   error: null as string | null,
-  favorites: [] as ICharacter[],
   count: 0,
   pages: 0,
   filter: {
@@ -80,18 +80,22 @@ export const fetchCharactersByPage = createAsyncThunk(
   }
 );
 
+
+
+
+
 const charactersSlice = createSlice({
   name: "characters",
   initialState,
   reducers: {
     addFavoriteCharacter: (state, action: PayloadAction<ICharacter>) => {
-      const found = state.favorites.find(
+      const foundFavorite = state.favorites.find(
         (character) => character.id === action.payload.id
       );
       const foundCharacter = state.characters.find(
         (character) => character.id === action.payload.id
       );
-      if (found) {
+      if (foundFavorite) {
         if(foundCharacter){
           foundCharacter.star = false;
         }
@@ -99,7 +103,7 @@ const charactersSlice = createSlice({
           (character) => character.id !== action.payload.id
         );
       }
-      if (!found && foundCharacter) {
+      if (!foundFavorite && foundCharacter) {
         foundCharacter.star = true;
         state.favorites.push(foundCharacter);
       }
@@ -131,9 +135,6 @@ const charactersSlice = createSlice({
         state.error = action.error.message || null;
       });
     builder
-      .addCase(fetchCharactersByPage.pending, (state, action) => {
-        // state.loading = true;
-      })
       .addCase(fetchCharactersByPage.fulfilled, (state, action) => {
         const newCharacters = [...action.payload.charactersResponse];
         newCharacters.forEach((character) => {

@@ -1,13 +1,14 @@
 import { useEffect, useRef } from "react";
 import {  Form, Link } from "react-router-dom";
 import { MdKeyboardArrowUp } from "react-icons/md";
-import { useAppSelector } from "../hooks/useStore";
+import { useAppSelector } from "@/hooks/useStore";
+import {BsSearch} from "react-icons/bs";
 
 
 
-export const NavBar = () => {
+const Navbar = () => {
   const { navRef, arrowRef, handleTopScroll } = useScrollNavbarAndArrowUp();
-  const {gender,species,status,name} = useAppSelector((state) => state.characters.filter);
+  const {gender,species,status} = useAppSelector((state) => state.characters.filter);
   const favoritesLenght = useAppSelector(
     (state) => state.characters.favorites.length
     );
@@ -20,17 +21,19 @@ export const NavBar = () => {
         </Link>
         <div className="search">
         <Form>
-            <input  name="name" type="text" placeholder="Search"/>
+          <div style={{display:'flex'}}>
+            <input style={{padding:'.4rem'}} name="name" type="text" placeholder="Search"/>
             <input name="species" value={species} type="hidden" placeholder="Search" />
             <input name="status" value={status} type="hidden" placeholder="Search" />
             <input name="gender" value={gender} type="hidden" placeholder="Search" />
-            <button >Search</button>
+            <button className="btn_search" ><BsSearch/></button>
+            </div>
           </Form>
         </div>
         <div className="links_content">
           <ul className="links">
             <li>
-              <Link to="/characters">Characters</Link>
+              <Link to="/">Characters</Link>
             </li>
             <li>
               <Link to="/favoritos">Favorites</Link>
@@ -49,7 +52,7 @@ export const NavBar = () => {
     </>
   );
 };
-
+export default Navbar;
 const useScrollNavbarAndArrowUp = () => {
   const navRef = useRef<HTMLElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);

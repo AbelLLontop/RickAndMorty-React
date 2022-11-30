@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { NavBar } from "../components/Navbar";
 import { Toaster } from "react-hot-toast";
+import { Navbar } from "@/components";
 
 const Layout = () => {
   return (
     <>
-      <NavBar />
+      <Navbar />
       <Outlet />
       <Toaster position="bottom-center" toastOptions={{duration:1600}} />
     </>

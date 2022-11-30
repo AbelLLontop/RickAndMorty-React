@@ -1,7 +1,7 @@
 import { Form} from 'react-router-dom';
 import { useAppSelector } from '../hooks/useStore';
 
-export const SiderbarFilter = () => {
+const SidebarFilter = () => {
   const {name} = useAppSelector((state) => state.characters.filter);
   const loading = useAppSelector((state) => state.characters.loading);
  
@@ -12,7 +12,7 @@ export const SiderbarFilter = () => {
         <h2>Filtros</h2>
         <br />
         <input value={name} name="name" type="hidden" placeholder="Search" />
-        <div className="filter">
+        <div className="filter"> 
           <label htmlFor="status">Estado</label>
           <select name="status" id="status" >
             <option value="">Todos</option>
@@ -49,3 +49,5 @@ export const SiderbarFilter = () => {
     </aside>
   );
 };
+
+export default SidebarFilter;
