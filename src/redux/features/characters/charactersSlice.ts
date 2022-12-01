@@ -48,16 +48,26 @@ export const fetchCharactersByFilters = createAsyncThunk(
   "characters/fetchCharactersByFilters",
   async (params: IFilterCharacter) => {
     const { status, species, name, gender } = params;
-    const response = await axios.get(
-      `https://rickandmortyapi.com/api/character/?name=${name}&status=${status}&species=${species}&gender=${gender}`
-    );
-    const charactersAdapted = adapterCharacters(response.data.results);
-    return {
-      charactersResponse: charactersAdapted,
-      filters: { status, species, name, gender },
-      count: response.data.info.count,
-      pages: response.data.info.pages,
-    };
+    try{
+      const response = await axios.get(
+        `https://rickandmortyapi.com/api/character/?name=${name}&status=${status}&species=${species}&gender=${gender}`
+      );
+      const charactersAdapted = adapterCharacters(response.data.results);
+      return {
+        charactersResponse: charactersAdapted,
+        filters: { status, species, name, gender },
+        count: response.data.info.count,
+        pages: response.data.info.pages,
+      };
+    }catch(e){
+      return {
+        charactersResponse: [],
+        filters: { status, species, name, gender },
+        count: 1,
+        pages: 1,
+      };
+    }
+   
   }
 );
 
@@ -129,11 +139,6 @@ const charactersSlice = createSlice({
         state.filter = { ...action.payload.filters, currentPage: 1 };
         state.loading = false;
       })
-      .addCase(fetchCharactersByFilters.rejected, (state, action) => {
-        state.loading = false;
-        state.characters = [];
-        state.error = action.error.message || null;
-      });
     builder
       .addCase(fetchCharactersByPage.fulfilled, (state, action) => {
         const newCharacters = [...action.payload.charactersResponse];

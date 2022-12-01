@@ -12,7 +12,6 @@ const FavoritesPage = () => {
   },[])
   return (
     <section>
-      <h1 style={{ padding: "1rem" }}>Favoritos </h1>
       <div style={{ display: "flex" }} className="listCharacters">
         {favorites.map((character) => (
           <CharacterCard key={character.id} character={character} />

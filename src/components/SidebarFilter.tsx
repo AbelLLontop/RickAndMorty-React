@@ -1,14 +1,14 @@
-import { Form} from 'react-router-dom';
+import { Form, useSubmit} from 'react-router-dom';
 import { useAppSelector } from '../hooks/useStore';
 
 const SidebarFilter = () => {
   const {name} = useAppSelector((state) => state.characters.filter);
-  const loading = useAppSelector((state) => state.characters.loading);
- 
-
+  const submit = useSubmit();
   return (
     <aside className="siderbar card-shadow">
-      <Form className="filters">
+      <Form className="filters" onChange={(event) => {
+        submit(event.currentTarget);
+      }}>
         <h2>Filtros</h2>
         <br />
         <input value={name} name="name" type="hidden" placeholder="Search" />
@@ -44,7 +44,6 @@ const SidebarFilter = () => {
           </select>
         </div>
         
-        <button type='submit' className="btn-filter">{loading?'filtrando...':'Filter'}</button>
       </Form>
     </aside>
   );

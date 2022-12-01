@@ -1,17 +1,18 @@
 import { useEffect, useRef } from "react";
-import {  Form, Link } from "react-router-dom";
+import { Form, Link, NavLink, useSubmit } from "react-router-dom";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { useAppSelector } from "@/hooks/useStore";
-import {BsSearch} from "react-icons/bs";
-
-
+import { BsSearch } from "react-icons/bs";
+import { MdOutlineFavorite } from "react-icons/md";
+import { MdEmojiPeople } from "react-icons/md";
+import InputSearch from "./InputSearch";
 
 const Navbar = () => {
   const { navRef, arrowRef, handleTopScroll } = useScrollNavbarAndArrowUp();
-  const {gender,species,status} = useAppSelector((state) => state.characters.filter);
+
   const favoritesLenght = useAppSelector(
     (state) => state.characters.favorites.length
-    );
+  );
 
   return (
     <>
@@ -19,25 +20,31 @@ const Navbar = () => {
         <Link to={"/"}>
           <h1>Personajes de Rick and Morty</h1>
         </Link>
-        <div className="search">
-        <Form>
-          <div style={{display:'flex'}}>
-            <input style={{padding:'.4rem'}} name="name" type="text" placeholder="Search"/>
-            <input name="species" value={species} type="hidden" placeholder="Search" />
-            <input name="status" value={status} type="hidden" placeholder="Search" />
-            <input name="gender" value={gender} type="hidden" placeholder="Search" />
-            <button className="btn_search" ><BsSearch/></button>
-            </div>
-          </Form>
-        </div>
+        <InputSearch/>
         <div className="links_content">
           <ul className="links">
             <li>
-              <Link to="/">Characters</Link>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `linkItem ${isActive ? "linkSelect" : undefined}`
+                }
+              >
+                <MdEmojiPeople />
+                Characters
+              </NavLink>
             </li>
             <li>
-              <Link to="/favoritos">Favorites</Link>
-              <span className="count_favorites">{favoritesLenght}</span>
+              <NavLink
+                to="/favoritos"
+                className={({ isActive }) =>
+                  `linkItem ${isActive ? "linkSelect" : undefined}`
+                }
+              >
+                <MdOutlineFavorite />
+                Favorites{" "}
+                <span className="count_favorites">{favoritesLenght}</span>
+              </NavLink>
             </li>
           </ul>
         </div>

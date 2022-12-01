@@ -1,4 +1,4 @@
-import {  FC, memo } from "react";
+import { FC, memo } from "react";
 import { ICharacter } from "@/interfaces/character.interface";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
@@ -15,8 +15,6 @@ interface Props {
   character: ICharacter;
 }
 
-
-
 const CharacterCard: FC<Props> = ({ character }) => {
   const dispatch = useAppDispatch();
   const startIcon = iconComponentStar(character.star);
@@ -25,17 +23,22 @@ const CharacterCard: FC<Props> = ({ character }) => {
   const iconGender = iconComponentGender(character.gender);
 
   const handleStar = () => {
-    showToast(character.star,character.name);
+    showToast(character.star, character.name);
     dispatch(addFavoriteCharacter(character));
   };
 
   return (
-    <div className="card card-shadow rounded" onClick={handleStar}>
+    <div className="card card-shadow rounded" >
       <span>
         {iconStatus}
         {character.status}
       </span>
-      <div className="card_container_image">
+      <div className="card_container_image" onClick={handleStar}>
+        <div className="card_hover">
+        {character.star?(
+          <AiFillStar/>
+        ): <AiOutlineStar/>}
+        </div>
         {character.star && (
           <span className="card_ticket_favorite">{startIcon} Favorito</span>
         )}
@@ -48,42 +51,38 @@ const CharacterCard: FC<Props> = ({ character }) => {
       </div>
       <div className="card_container_info">
         <h4>{character.name}</h4>
-      
-        <div style={{ display: "grid",gridTemplateColumns:'1fr 1fr' }}>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
           <div>
-          <span className="text-secondary" style={{ fontSize: "12px" }}>
-          {iconSpecies}  especie
-          </span>
-          <br />
-          <p>
-            {character.species}
-          </p>
+            <span className="text-secondary" style={{ fontSize: "12px" }}>
+              {iconSpecies} especie
+            </span>
+            <br />
+            <p>{character.species}</p>
           </div>
           <div>
-          <span className="text-secondary" style={{ fontSize: "12px" }}>
-            genero
-          </span>
-          <p>
-            {iconGender}
-            {character.gender}
-          </p>
+            <span className="text-secondary" style={{ fontSize: "12px" }}>
+              genero
+            </span>
+            <p>
+              {iconGender}
+              {character.gender}
+            </p>
           </div>
         </div>
         <span className="text-secondary" style={{ fontSize: "12px" }}>
           origen
         </span>
         <br />
-        <span >{character.location}</span>
+        <span>{character.location}</span>
         <br />
 
         <div className="starContent">
-        <span className="text-secondary" style={{ fontSize: "12px" }}>
-          Star
-        </span>
-        {startIcon}
-
+          <span className="text-secondary" style={{ fontSize: "12px" }}>
+            Star
+          </span>
+          {startIcon}
         </div>
-       
       </div>
     </div>
   );
@@ -91,7 +90,7 @@ const CharacterCard: FC<Props> = ({ character }) => {
 
 export default memo(CharacterCard);
 
-const showToast = (star:boolean,name:string)=>{
+const showToast = (star: boolean, name: string) => {
   if (!star) {
     toast(`agregando ${name} a favoritos`, {
       icon: "😎",
@@ -101,7 +100,7 @@ const showToast = (star:boolean,name:string)=>{
       icon: "😥",
     });
   }
-}
+};
 const iconComponentSpecie = (species: string) => {
   return species === "Human" ? <GiPerson /> : <GiAlienSkull />;
 };
@@ -111,7 +110,7 @@ const iconComponentStar = (isFavorite: boolean) => {
 const iconComponentStatus = (status: string) => {
   switch (status) {
     case "Alive":
-      return <AiFillHeart className="red"/>;
+      return <AiFillHeart className="red" />;
     case "Dead":
       return <GiDeathSkull />;
     default:
