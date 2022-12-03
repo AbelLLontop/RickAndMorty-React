@@ -1,5 +1,5 @@
 import { LoaderFunction } from "react-router-dom";
-import { SidebarFilter ,ListCharacters} from "@/components";
+import { SidebarFilter,InfiniteScrollCharacters } from "@/components";
 
 export interface ILoaderParams{
   status: string;
@@ -25,11 +25,12 @@ export const loader:LoaderFunction= async ({request,params})=>{
 }
 
 const App = () => {
+
   return (
       <div className="pageHome">
         <SidebarFilter />
         <main className="main">
-          <ListCharacters />
+          <InfiniteScrollCharacters/>
         </main>
       </div>
   );

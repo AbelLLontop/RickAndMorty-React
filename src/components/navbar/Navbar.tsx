@@ -13,7 +13,7 @@ const Navbar = () => {
   const favoritesLenght = useAppSelector(
     (state) => state.characters.favorites.length
   );
-
+ 
   return (
     <>
       <nav ref={navRef} className="navbar">

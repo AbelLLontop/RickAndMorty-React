@@ -1,0 +1,102 @@
+.card-shadow{
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 12px 16px 0 rgba(0,0,0,0.03),0 1px 2px 0 rgba(0,0,0,0.04);
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+  }
+
+  .card{
+    background: white;
+    padding: 1rem;
+    width: 14rem;
+    cursor: pointer;
+    height: max-content;
+    transition: all 0.3s ease-in-out;
+  
+  }
+  .card:hover{
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    transform: scale(1.02);
+  }
+  .card_container_image{
+    position: relative;
+    cursor: default;
+  
+  }
+  .card_ticket_favorite{
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: solid 3px black;
+    padding: 0.4rem;
+    color: black;
+    background-color: #e85356;
+    transform: rotateZ(8deg);
+    animation: shakeTicket .4s forwards ease-out;
+  }
+  
+  @keyframes shakeTicket{
+    0%{
+      opacity: 0;
+      transform: translateY(8px) rotateZ(4deg);
+    }
+    50%{
+      opacity: 1;
+      transform:translateY(0px) rotateZ(-4deg);
+    }
+    100%{
+      transform: rotateZ(8deg);
+    }
+  }
+  .card_container_image:hover > .card_hover{
+    opacity: 1;
+  }
+  .card_hover{
+    opacity: 0;
+    width: 100%;
+    font-size: 5rem;
+    height: 98%;
+    border-radius: 1rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #0000002e;
+    transition: opacity .4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card_hover svg{
+    fill: #fdd900;
+    filter: drop-shadow(0px 0px 2px rgb(0 0 0 / 0.4));
+    animation: shadowStar .4s forwards ease-out;
+  }
+  @keyframes shadowStar{
+    0%{
+      transform: scale(1);
+    }
+    50%{
+      transform: scale(1.2);
+      filter: drop-shadow(0px 0px 2px #fdd900);
+    }
+    100%{
+      transform: scale(1);
+    }
+  }
+
+  .card_header-spans .span{
+    border-radius: 1rem;
+    gap:.4rem;
+  
+    padding: 0.4rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.4rem;
+  }
+  
+  .idCard{
+    font-size: 1.5rem;
+    font-weight: bold;
+  }

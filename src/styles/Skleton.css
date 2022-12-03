@@ -1,0 +1,21 @@
+.skleton{
+    --loading-grey :#e2e8f0;
+    background-color: var(--loading-grey);
+    background: linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, .5) 50%,
+      rgba(255, 255, 255, 0) 60%
+    ) var(--loading-grey);
+    background-size: 200% 100%;
+    background-position-x: 180%;
+    animation: .8s skleton ease-in-out infinite;
+  }
+  .image_skleton{
+    width: 100%;
+  }
+  @keyframes skleton {
+    to {
+      background-position-x: -20%;
+    }
+  }

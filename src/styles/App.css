@@ -1,0 +1,200 @@
+.main {
+  flex-grow: 1;
+}
+.listCharacters {
+  display: grid;
+  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 1rem;
+}
+.characterCardImage {
+  border-radius: 1rem;
+  width: 12rem;
+  height: 12rem;
+  object-fit: cover;
+  user-select: none;
+}
+
+.pageHome {
+  display: flex;
+  gap: 1rem;
+}
+
+.card_header-spans {
+  display: flex;
+  justify-content: space-between;
+}
+
+.span-live svg {
+  fill: rgb(0, 255, 0);
+}
+
+.span-dead svg {
+  fill: black;
+}
+
+.charactersByEpisode {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  max-width: 80%;
+  margin: 0 auto;
+}
+.episodeCardCharacter {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: #f7f4f4;
+  overflow: hidden;
+
+}
+.episodeCardCharacter img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.episodesHeader {
+  text-align: center;
+  padding: 1rem;
+}
+
+.characterPage {
+}
+.characterPage .main {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 1rem;
+  margin: 2rem auto;
+  background-color: white;
+  width: fit-content;
+  padding: 1rem;
+  border-radius: 1rem;
+  max-width: 45rem;
+  min-width: 40rem;
+}
+.characterPage .main > img {
+  border-radius: 1rem;
+}
+.characterPage_title {
+  font-size: 3rem;
+}
+.characterPage_status_content {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.characterPage_status_content img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+.characterPage_status {
+  position: absolute;
+  right: 80%;
+  display: flex;
+  top: -0.4rem;
+  padding: 0.4rem 1rem;
+  background-color: rgb(255, 255, 255);
+  border-radius: 0.4rem;
+  border: solid 3px #747474;
+  color: #4b4b4b;
+  gap: 0.4rem;
+  background: #ffffff;
+}
+
+.status_live {
+  border: solid 3px #00c636;
+  color: #00c636;
+}
+.status_dead {
+  border: solid 3px #101010;
+  color: #181818;
+}
+
+.characterPage_info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.episodes_container {
+  text-align: center;
+  padding: 1rem;
+}
+.episodes {
+  margin-top: 1rem;
+  display: grid;
+  margin: 0 auto;
+  margin-top: 1rem;
+  max-width: 80%;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.4rem;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background-color: white;
+}
+.episode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00c636;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  color: #ffffff;
+  border: solid 4px #00c636;
+  transition: all 0.4s ease;
+}
+.episode:hover {
+  background-color: #08a632;
+  border: solid 4px #08a632;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgb(65, 65, 65);
+}
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(49, 49, 49);
+  padding: 1rem;
+  border-radius: 1rem;
+  gap: 1rem;
+  height: 20rem;
+}
+
+
+.characterPage_content{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 25rem;
+}
+.icon_characterPage_nextPreview{
+  font-size: 4rem;
+  cursor: pointer;
+  background-color: rgba(113, 113, 113, 0.103);
+  border-radius: 1rem;
+  margin: 1rem;
+  transition: all 0.4s ease;
+}
+.icon_characterPage_nextPreview:hover{
+  background-color: rgba(145, 145, 145, 0.3);
+}

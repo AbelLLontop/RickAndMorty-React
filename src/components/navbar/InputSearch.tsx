@@ -17,6 +17,7 @@ const InputSearch = () => {
     }
   };
   return (
+    
     <div className="search">
       <Form onSubmit={handleSubmit}>
         <div style={{ display: "flex" }}>

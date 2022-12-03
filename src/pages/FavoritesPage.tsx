@@ -1,5 +1,5 @@
 
-import { CharacterCard } from "@/components";
+import { ListCharacters } from "@/components";
 import { useAppSelector } from "@/hooks/useStore";
 import { useEffect } from 'react';
 
@@ -10,12 +10,11 @@ const FavoritesPage = () => {
       top: 0,
     })
   },[])
+
   return (
     <section>
-      <div style={{ display: "flex" }} className="listCharacters">
-        {favorites.map((character) => (
-          <CharacterCard key={character.id} character={character} />
-        ))}
+      <div className="listCharacters">
+        <ListCharacters characters={favorites}/>
       </div>
     </section>
   );

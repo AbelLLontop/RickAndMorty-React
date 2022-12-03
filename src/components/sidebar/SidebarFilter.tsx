@@ -1,5 +1,5 @@
 import { Form, useSubmit} from 'react-router-dom';
-import { useAppSelector } from '../hooks/useStore';
+import { useAppSelector } from '../../hooks/useStore';
 
 const SidebarFilter = () => {
   const {name} = useAppSelector((state) => state.characters.filter);

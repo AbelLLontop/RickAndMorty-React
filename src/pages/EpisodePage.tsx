@@ -1,8 +1,9 @@
 import { useAppDispatch } from "@/hooks/useStore";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchGetEpisodeById } from "../redux/features/characters/charactersSlice";
 import { useAppSelector } from "../hooks/useStore";
+import {ListMiniCharacterCard,Loader} from "@/components";
 
 const EpisodePage = () => {
   const { id } = useParams();
@@ -14,14 +15,19 @@ const EpisodePage = () => {
     (state) => state.characters.episodeSelected.loading
   );
 
-  const characters = episode?.characters;
+  useEffect(()=>{
+    window.scrollTo({
+      top: 0,
+    })
+  },[])
+  const characters = episode?.characters || [];
   useEffect(() => {
     dispatch(fetchGetEpisodeById(id || ""));
   }, [id]);
-  console.log(episode);
 
+  console.log(loading)
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader/>;
   }
 
   return (
@@ -34,29 +40,11 @@ const EpisodePage = () => {
         <p>characters in this chapter</p>
         </header>
 
-    <div className="charactersByEpisode">
-      {characters?.map((characterUrl) => {
-        const characterId = getNameIdUrlCharacter(characterUrl);
-        return (
-          <div className="episodeCardCharacter" key={characterId}>
-            <Link to={`/character/${characterId}`}>
-            <img
-              src={`https://rickandmortyapi.com/api/character/avatar/${characterId}.jpeg`}
-              alt=""
-            />
-            </Link>
-          </div>
-        );
-      })}
-    </div>
+    <ListMiniCharacterCard characters={characters} />
     </div>
   );
 };
 
-const getNameIdUrlCharacter = (url: string) => {
-  const urlSplited = url.split("/");
-  const id = urlSplited[urlSplited.length - 1];
-  return id;
-};
+
 
 export default EpisodePage;
