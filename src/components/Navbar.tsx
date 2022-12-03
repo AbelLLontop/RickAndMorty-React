@@ -18,7 +18,7 @@ const Navbar = () => {
     <>
       <nav ref={navRef} className="navbar">
         <Link to={"/"}>
-          <h1>Personajes de Rick and Morty</h1>
+          <h1>Rick and Morty</h1>
         </Link>
         <InputSearch/>
         <div className="links_content">

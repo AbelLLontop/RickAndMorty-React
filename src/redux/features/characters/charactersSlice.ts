@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ICharacter } from "@/interfaces/character.interface";
+import { ICharacter, ICharacterComplete } from "@/interfaces/character.interface";
+import { IEpisode } from '@/interfaces/character.interface';
 
 const initialState = {
   characters: [] as ICharacter[],
@@ -9,6 +10,14 @@ const initialState = {
   error: null as string | null,
   count: 0,
   pages: 0,
+  characterSelected: {
+    loading:false,
+    data:null as ICharacterComplete | null
+  } ,
+  episodeSelected:{
+    loading:false,
+    data:null as IEpisode|null
+  },
   filter: {
     currentPage: 1,
     name: "",
@@ -43,6 +52,36 @@ const adapterCharacters = (characters: []): ICharacter[] => {
     return character;
   });
 };
+
+export const fetchGetCharacterById = createAsyncThunk(
+  "characters/fetchGetCharacterById",
+  async (id: string) => {
+    try{
+      const response = await axios.get(
+        `https://rickandmortyapi.com/api/character/${id}`
+      );
+      const character: ICharacterComplete = response.data;
+      return character;
+    }catch(e){
+      return null;
+    }
+  }
+);
+
+export const fetchGetEpisodeById = createAsyncThunk(
+  "characters/fetchGetEpisodeById",
+  async (id: string) => {
+    try{
+      const response = await axios.get(
+        `https://rickandmortyapi.com/api/episode/${id}`
+      );
+      const episode: IEpisode = response.data;
+      return episode;
+    }catch(e){
+      return null;
+    }
+  }
+);
 
 export const fetchCharactersByFilters = createAsyncThunk(
   "characters/fetchCharactersByFilters",
@@ -139,6 +178,7 @@ const charactersSlice = createSlice({
         state.filter = { ...action.payload.filters, currentPage: 1 };
         state.loading = false;
       })
+
     builder
       .addCase(fetchCharactersByPage.fulfilled, (state, action) => {
         const newCharacters = [...action.payload.charactersResponse];
@@ -162,6 +202,24 @@ const charactersSlice = createSlice({
         state.error = action.error.message || null;
         state.loading = false;
       });
+//fetchGetCharacterById
+      builder.addCase(fetchGetCharacterById.pending,(state,action)=>{
+        state.characterSelected.loading = true;
+      })
+      builder.addCase(fetchGetCharacterById.fulfilled,(state,action)=>{
+        state.characterSelected.loading = false;
+        state.characterSelected.data = action.payload;
+      });
+  //fetchGetEpisodeById
+      builder.addCase(fetchGetEpisodeById.pending,(state,action)=>{
+        state.episodeSelected.loading = true;
+      }
+      )
+      builder.addCase(fetchGetEpisodeById.fulfilled,(state,action)=>{
+        state.episodeSelected.loading = false;
+        state.episodeSelected.data = action.payload;
+      }
+      )
   },
 });
 export const { addFavoriteCharacter } = charactersSlice.actions;

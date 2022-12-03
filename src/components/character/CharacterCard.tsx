@@ -1,4 +1,4 @@
-import { FC, memo } from "react";
+import { FC, memo, useState } from "react";
 import { ICharacter } from "@/interfaces/character.interface";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
@@ -10,6 +10,7 @@ import { GiPerson } from "react-icons/gi";
 import { useAppDispatch } from "@/hooks/useStore";
 import { addFavoriteCharacter } from "@/redux/features/characters/charactersSlice";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   character: ICharacter;
@@ -17,21 +18,32 @@ interface Props {
 
 const CharacterCard: FC<Props> = ({ character }) => {
   const dispatch = useAppDispatch();
-  const startIcon = iconComponentStar(character.star);
-  const iconSpecies = iconComponentSpecie(character.species);
-  const iconStatus = iconComponentStatus(character.status);
-  const iconGender = iconComponentGender(character.gender);
+  const navigate = useNavigate();
+  const { startIcon, iconSpecies, iconStatus, iconGender }  = getIcons(character);
 
-  const handleStar = () => {
+  const handleStar = (e:any) => {
+    e.stopPropagation();
     showToast(character.star, character.name);
     dispatch(addFavoriteCharacter(character));
   };
+  
+  const handleClick = () => {
+    navigate(`/character/${character.id}`);
+  }
 
   return (
-    <div className="card card-shadow rounded" >
-      <span>
+   
+    <div className="card card-shadow rounded" onClick={handleClick} >
+      
+      <span className="card_header-spans">
+       
+        <div className="span idCard">
+        #{character.id}
+        </div>
+        <div className={`span ${nameClassStatusColor(character.status)}`}>
         {iconStatus}
         {character.status}
+        </div>
       </span>
       <div className="card_container_image" onClick={handleStar}>
         <div className="card_hover">
@@ -51,7 +63,7 @@ const CharacterCard: FC<Props> = ({ character }) => {
       </div>
       <div className="card_container_info">
         <h4>{character.name}</h4>
-
+        
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
           <div>
             <span className="text-secondary" style={{ fontSize: "12px" }}>
@@ -90,6 +102,28 @@ const CharacterCard: FC<Props> = ({ character }) => {
 
 export default memo(CharacterCard);
 
+
+const getIcons = (character: ICharacter) => {
+  const startIcon = iconComponentStar(character.star);
+  const iconSpecies = iconComponentSpecie(character.species);
+  const iconStatus = iconComponentStatus(character.status);
+  const iconGender = iconComponentGender(character.gender);
+  return { startIcon, iconSpecies, iconStatus, iconGender };
+}
+
+
+const nameClassStatusColor = (status:string)=>{
+  switch(status){
+    case 'Alive':
+      return 'span-live'
+    case 'Dead':
+      return 'span-dead'
+    default:
+      return 'span-unknow'
+  }
+  }
+
+
 const showToast = (star: boolean, name: string) => {
   if (!star) {
     toast(`agregando ${name} a favoritos`, {
@@ -110,11 +144,11 @@ const iconComponentStar = (isFavorite: boolean) => {
 const iconComponentStatus = (status: string) => {
   switch (status) {
     case "Alive":
-      return <AiFillHeart className="red" />;
+      return <AiFillHeart />;
     case "Dead":
       return <GiDeathSkull />;
     default:
-      return <FaQuestion color="gray" />;
+      return <FaQuestion />;
   }
 };
 
