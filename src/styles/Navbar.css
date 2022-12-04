@@ -105,4 +105,13 @@
     border: none;
     background: #f7f4f4;
   }
-  
+  .logo{
+    display: flex;
+    justify-self: start;
+    height: 100%;
+    align-items: center;
+    width: 100%;
+  }
+  .logo svg{
+    fill:#1a202c;
+  }
