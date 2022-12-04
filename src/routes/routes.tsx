@@ -1,11 +1,11 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter} from "react-router-dom";
 import Layout from "@/pages/Layout";
 import App, { loader as LoaderFiltersParams} from "@/pages/App";
 import FavoritesPage from "@/pages/FavoritesPage";
 import CharacterPage from '@/pages/CharacterPage';
 import EpisodePage from "@/pages/EpisodePage";
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
     {
         path: "/",
         element: <Layout />,
