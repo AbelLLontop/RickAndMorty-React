@@ -1,7 +1,15 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { ICharacter, ICharacterComplete } from "@/interfaces/character.interface";
-import { IEpisode } from '@/interfaces/character.interface';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  ICharacter,
+  ICharacterComplete,
+} from "@/interfaces/character.interface";
+import { IEpisode } from "@/interfaces/character.interface";
+import {
+  fetchCharactersByFilters,
+  fetchCharactersByPage,
+  fetchGetCharacterById,
+  fetchGetEpisodeById,
+} from "./thunks";
 
 const initialState = {
   characters: [] as ICharacter[],
@@ -11,12 +19,12 @@ const initialState = {
   count: 0,
   pages: 0,
   characterSelected: {
-    loading:false,
-    data:null as ICharacterComplete | null
-  } ,
-  episodeSelected:{
-    loading:false,
-    data:null as IEpisode|null
+    loading: false,
+    data: null as ICharacterComplete | null,
+  },
+  episodeSelected: {
+    loading: false,
+    data: null as IEpisode | null,
   },
   filter: {
     currentPage: 1,
@@ -27,136 +35,40 @@ const initialState = {
   },
 };
 
-interface IFilterCharacter {
-  status: string;
-  species: string;
-  gender: string;
-  name: string;
-  currentPage: number;
-}
-
-const adapterCharacters = (characters: []): ICharacter[] => {
-  return characters.map((itemCharacter: any) => {
-    let character: ICharacter = {
-      id: itemCharacter.id,
-      name: itemCharacter.name,
-      status: itemCharacter.status,
-      species: itemCharacter.species,
-      type: itemCharacter.type,
-      created: itemCharacter.created,
-      gender: itemCharacter.gender,
-      image: itemCharacter.image,
-      location: itemCharacter.location.name,
-      star: false,
-    };
-    return character;
-  });
+const searchCharacterById = (character: ICharacter, listCharacters: ICharacter[]) => {
+  return listCharacters.find((favorite) => favorite.id === character.id);
 };
-
-export const fetchGetCharacterById = createAsyncThunk(
-  "characters/fetchGetCharacterById",
-  async (id: string) => {
-    try{
-      const response = await axios.get(
-        `https://rickandmortyapi.com/api/character/${id}`
-      );
-      const character: ICharacterComplete = response.data;
-      return character;
-    }catch(e){
-      return null;
-    }
-  }
-);
-
-export const fetchGetEpisodeById = createAsyncThunk(
-  "characters/fetchGetEpisodeById",
-  async (id: string) => {
-    try{
-      const response = await axios.get(
-        `https://rickandmortyapi.com/api/episode/${id}`
-      );
-      const episode: IEpisode = response.data;
-      return episode;
-    }catch(e){
-      return null;
-    }
-  }
-);
-
-export const fetchCharactersByFilters = createAsyncThunk(
-  "characters/fetchCharactersByFilters",
-  async (params: IFilterCharacter) => {
-    const { status, species, name, gender } = params;
-    try{
-      const response = await axios.get(
-        `https://rickandmortyapi.com/api/character/?name=${name}&status=${status}&species=${species}&gender=${gender}`
-      );
-      const charactersAdapted = adapterCharacters(response.data.results);
-      return {
-        charactersResponse: charactersAdapted,
-        filters: { status, species, name, gender },
-        count: response.data.info.count,
-        pages: response.data.info.pages,
-      };
-    }catch(e){
-      return {
-        charactersResponse: [],
-        filters: { status, species, name, gender },
-        count: 1,
-        pages: 1,
-      };
-    }
-   
-  }
-);
-
-export const fetchCharactersByPage = createAsyncThunk(
-  "characters/fetchCharactersByPage",
-  async (currentPage: number, { getState }) => {
-    const { characters } = getState() as { characters: any };
-
-    const { filter } = characters as { filter: IFilterCharacter };
-    const response = await axios.get(
-      `https://rickandmortyapi.com/api/character/?name=${filter.name}&status=${filter.status}&species=${filter.species}&gender=${filter.gender}&page=${currentPage}`
-    );
-    const charactersAdapted = adapterCharacters(response.data.results);
-    return {
-      charactersResponse: charactersAdapted,
-      currentPage: currentPage,
-      count: response.data.info.count,
-      pages: response.data.info.pages,
-    };
-  }
-);
-
-
-
-
+const filterCharacterById = (character: ICharacter, listCharacters: ICharacter[]) => {
+  return listCharacters.filter((favorite) => favorite.id !== character.id);
+};
 
 const charactersSlice = createSlice({
   name: "characters",
   initialState,
-  reducers: {
+  reducers: { 
     addFavoriteCharacter: (state, action: PayloadAction<ICharacter>) => {
-      const foundFavorite = state.favorites.find(
-        (character) => character.id === action.payload.id
-      );
-      const foundCharacter = state.characters.find(
-        (character) => character.id === action.payload.id
-      );
-      if (foundFavorite) {
-        if(foundCharacter){
-          foundCharacter.star = false;
+      const character = action.payload;
+      const existFavorite = searchCharacterById(character, state.favorites);
+      if(!existFavorite) {
+        const foundCharacter = searchCharacterById(character, state.characters);
+        if(foundCharacter) {
+          foundCharacter.star = true;
+          state.favorites.push(foundCharacter);
         }
-        state.favorites = state.favorites.filter(
-          (character) => character.id !== action.payload.id
-        );
-      }
-      if (!foundFavorite && foundCharacter) {
-        foundCharacter.star = true;
-        state.favorites.push(foundCharacter);
       }
     },
+    removeFavoriteCharacter: (state, action: PayloadAction<ICharacter>) => {
+      const character = action.payload;
+      const existFavorite = searchCharacterById(character, state.favorites);
+      if(existFavorite) {
+        state.favorites = filterCharacterById(character, state.favorites);
+        const characterInCharacters = searchCharacterById(character, state.characters);
+        if(characterInCharacters) {
+          characterInCharacters.star = false;
+        }
+      }
+    }
+    
   },
   extraReducers: (builder) => {
     builder
@@ -177,7 +89,7 @@ const charactersSlice = createSlice({
         state.pages = action.payload.pages;
         state.filter = { ...action.payload.filters, currentPage: 1 };
         state.loading = false;
-      })
+      });
 
     builder
       .addCase(fetchCharactersByPage.fulfilled, (state, action) => {
@@ -202,25 +114,24 @@ const charactersSlice = createSlice({
         state.error = action.error.message || null;
         state.loading = false;
       });
-//fetchGetCharacterById
-      builder.addCase(fetchGetCharacterById.pending,(state,action)=>{
-        state.characterSelected.loading = true;
-      })
-      builder.addCase(fetchGetCharacterById.fulfilled,(state,action)=>{
-        state.characterSelected.loading = false;
-        state.characterSelected.data = action.payload;
-      });
-  //fetchGetEpisodeById
-      builder.addCase(fetchGetEpisodeById.pending,(state,action)=>{
-        state.episodeSelected.loading = true;
-      }
-      )
-      builder.addCase(fetchGetEpisodeById.fulfilled,(state,action)=>{
-        state.episodeSelected.loading = false;
-        state.episodeSelected.data = action.payload;
-      }
-      )
+    //fetchGetCharacterById
+    builder.addCase(fetchGetCharacterById.pending, (state, action) => {
+      state.characterSelected.loading = true;
+    });
+    builder.addCase(fetchGetCharacterById.fulfilled, (state, action) => {
+      state.characterSelected.loading = false;
+      state.characterSelected.data = action.payload;
+    });
+    //fetchGetEpisodeById
+    builder.addCase(fetchGetEpisodeById.pending, (state, action) => {
+      state.episodeSelected.loading = true;
+    });
+    builder.addCase(fetchGetEpisodeById.fulfilled, (state, action) => {
+      state.episodeSelected.loading = false;
+      state.episodeSelected.data = action.payload;
+    });
   },
 });
-export const { addFavoriteCharacter } = charactersSlice.actions;
-export default charactersSlice.reducer;
+
+export const { addFavoriteCharacter ,removeFavoriteCharacter} = charactersSlice.actions;
+export default charactersSlice;

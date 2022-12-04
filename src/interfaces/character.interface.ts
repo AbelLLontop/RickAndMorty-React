@@ -40,3 +40,12 @@ export interface IEpisode {
     url:        string;
     created:    Date;
 }
+
+
+export interface IFilterCharacter {
+    status: string;
+    species: string;
+    gender: string;
+    name: string;
+    currentPage: number;
+  }

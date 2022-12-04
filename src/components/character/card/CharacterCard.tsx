@@ -1,4 +1,4 @@
-import { FC, memo, useState } from "react";
+import { FC, memo } from "react";
 import { ICharacter } from "@/interfaces/character.interface";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
@@ -8,7 +8,7 @@ import { IoMaleSharp, IoFemaleSharp } from "react-icons/io5";
 import { GiAlienSkull } from "react-icons/gi";
 import { GiPerson } from "react-icons/gi";
 import { useAppDispatch } from "@/hooks/useStore";
-import { addFavoriteCharacter } from "@/redux/features/characters/charactersSlice";
+import { addFavoriteCharacter, removeFavoriteCharacter } from "@/redux/features/characters/charactersSlice";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -24,7 +24,11 @@ const CharacterCard: FC<Props> = ({ character }) => {
   const handleStar = (e:any) => {
     e.stopPropagation();
     showToast(character.star, character.name);
-    dispatch(addFavoriteCharacter(character));
+    if(!character.star){
+      dispatch(addFavoriteCharacter(character));
+    }else{
+      dispatch(removeFavoriteCharacter(character));
+    }
   };
   
   const handleClick = () => {

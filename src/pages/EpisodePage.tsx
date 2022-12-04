@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@/hooks/useStore";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchGetEpisodeById } from "../redux/features/characters/charactersSlice";
+import { fetchGetEpisodeById } from "../redux/features/characters/thunks";
 import { useAppSelector } from "../hooks/useStore";
 import {ListMiniCharacterCard,Loader} from "@/components";
 
@@ -25,7 +25,6 @@ const EpisodePage = () => {
     dispatch(fetchGetEpisodeById(id || ""));
   }, [id]);
 
-  console.log(loading)
   if (loading) {
     return <Loader/>;
   }

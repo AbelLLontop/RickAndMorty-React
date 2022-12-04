@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
-import { Form, Link, NavLink, useSubmit } from "react-router-dom";
+import {  Link, NavLink } from "react-router-dom";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { useAppSelector } from "@/hooks/useStore";
-import { BsSearch } from "react-icons/bs";
 import { MdOutlineFavorite } from "react-icons/md";
 import { MdEmojiPeople } from "react-icons/md";
 import InputSearch from "./InputSearch";

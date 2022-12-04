@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from "../../../hooks/useStore";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchCharactersByFilters, fetchCharactersByPage } from "@/redux/features/characters/charactersSlice";
+import { fetchCharactersByFilters, fetchCharactersByPage } from "@/redux/features/characters/thunks";
 import {  useLoaderData } from 'react-router-dom';
 import { useEffect } from 'react';
 import { ILoaderParams } from "@/pages/App";

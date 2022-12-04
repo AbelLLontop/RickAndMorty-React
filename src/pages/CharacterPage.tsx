@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/useStore";
-import { fetchGetCharacterById } from "@/redux/features/characters/charactersSlice";
+import { fetchGetCharacterById } from "@/redux/features/characters/thunks";
 import { CardDetail, EpisodesList, Loader } from "@/components";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 
