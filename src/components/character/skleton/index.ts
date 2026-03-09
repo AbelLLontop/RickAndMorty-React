@@ -1,1 +1,0 @@
-export {default as SkletonCardList} from './SkletonCardList';

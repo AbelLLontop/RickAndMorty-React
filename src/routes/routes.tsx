@@ -1,37 +1,39 @@
-import { createHashRouter} from "react-router-dom";
-import Layout from "@/pages/Layout";
-import App, { loader as LoaderFiltersParams} from "@/pages/App";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import { Layout } from "@/components/ui/Layout";
+import App from "@/pages/App";
 import FavoritesPage from "@/pages/FavoritesPage";
-import CharacterPage from '@/pages/CharacterPage';
-import EpisodePage from "@/pages/EpisodePage";
+import CharacterPage from "@/pages/CharacterPage";
 
-export const router = createHashRouter([
+export const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
-        children:[
+        children: [
             {
-                index:true,
-                element:<App /> ,
-               
-                loader:LoaderFiltersParams
+                index: true,
+                element: <App />,
             },
             {
-                path:'/favoritos',
-                element:<FavoritesPage/>
+                path: "favorites",
+                element: <FavoritesPage />,
             },
             {
-                path:"/character/:id",
-                element:<CharacterPage/>
+                path: "character/:id",
+                element: <CharacterPage />,
             },
             {
-                path:"/episode/:id",
-                element:<EpisodePage/>
+                path: "favoritos",
+                element: <Navigate to="/favorites" replace />,
             },
             {
                 path: "*",
-                element: <h1>404</h1>
-            }
-        ]
-    }
-])
+                element: (
+                    <div className="flex flex-col items-center justify-center py-20">
+                        <h1 className="text-9xl font-black text-slate-200">404</h1>
+                        <p className="text-xl text-slate-500 mt-4">Wubba Lubba Dub Dub! Page not found.</p>
+                    </div>
+                ),
+            },
+        ],
+    },
+]);
